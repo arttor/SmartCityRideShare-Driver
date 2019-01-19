@@ -36,7 +36,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/button_ok"
                 android:layout_marginTop="75dp"
-                android:gravity="top|end"
+                android:layout_gravity="top|end"
                 android:visibility="gone"/>
         <Button
                 android:text="CLEAR"
@@ -44,7 +44,7 @@
                 android:onClick="@{cancelListener}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="top|start"
+                android:layout_gravity="top|start"
                 android:id="@+id/button_clear"
                 android:visibility="gone"/>
 
