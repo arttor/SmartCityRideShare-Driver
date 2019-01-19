@@ -1,4 +1,4 @@
-package com.tlabs.smartcity.rideshare.ridesharedriver.screens.api
+package com.tlabs.smartcity.rideshare.ridesharedriver.api
 
 import android.util.Log
 import com.mapbox.api.directions.v5.DirectionsCriteria

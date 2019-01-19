@@ -107,6 +107,10 @@ dependencies {
     implementation ("com.squareup.okhttp3:okhttp-urlconnection:3.10.0"){
         exclude group: 'com.squareup.okhttp3', module: 'okhttp'
     }
+
+    implementation 'com.google.firebase:firebase-core:16.0.6'
+    implementation 'com.google.firebase:firebase-messaging:17.3.4'
+    implementation 'com.google.android.gms:play-services-base:16.0.1'
     // Testing dependencies
     androidTestImplementation "androidx.test.ext:junit:$androidxTestVersion"
     androidTestImplementation "androidx.test:core:$androidxTestVersion"
@@ -115,4 +119,5 @@ dependencies {
     androidTestImplementation "androidx.arch.core:core-testing:$coreTestingVersion"
     testImplementation "junit:junit:$junitVersion"
 }
+apply plugin: 'com.google.gms.google-services'
 

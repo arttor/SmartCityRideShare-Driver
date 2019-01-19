@@ -1,4 +1,4 @@
-package com.tlabs.smartcity.rideshare.ridesharedriver.screens.api
+package com.tlabs.smartcity.rideshare.ridesharedriver.api
 
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import kotlinx.coroutines.Deferred
