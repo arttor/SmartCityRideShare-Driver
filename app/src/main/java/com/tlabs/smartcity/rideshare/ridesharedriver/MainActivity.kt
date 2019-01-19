@@ -10,6 +10,7 @@ import androidx.navigation.Navigation
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
+import com.google.firebase.messaging.FirebaseMessaging
 import com.tlabs.smartcity.rideshare.ridesharedriver.screens.map.MapViewModel
 import com.tlabs.smartcity.rideshare.ridesharedriver.screens.match.MatchViewModel
 import kotlinx.android.synthetic.main.activity_main.*
@@ -46,6 +47,7 @@ class MainActivity : AppCompatActivity() {
             viewModel.msg = intent.getStringExtra("msg")
             navController.navigate(R.id.matchFragment)
         }
+
     }
 
 
