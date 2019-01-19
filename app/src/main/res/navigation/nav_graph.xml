@@ -11,4 +11,10 @@
               android:name="com.tlabscloud.r2b.dflow.screens.settings.SettingsFragment"
               tools:layout="@layout/settings_fragment">
     </fragment>
+
+    <fragment android:id="@+id/matchFragment"
+              android:label="Match"
+              android:name="com.tlabs.smartcity.rideshare.ridesharedriver.screens.match.MatchFragment"
+              tools:layout="@layout/match_fragment">
+    </fragment>
 </navigation>

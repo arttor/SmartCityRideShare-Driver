@@ -3,6 +3,10 @@ package com.tlabs.smartcity.rideshare.ridesharedriver.service
 import android.util.Log
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import android.content.Intent
+import android.os.Bundle
+import com.tlabs.smartcity.rideshare.ridesharedriver.MainActivity
+
 
 class MsgService : FirebaseMessagingService() {
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
@@ -12,6 +16,12 @@ class MsgService : FirebaseMessagingService() {
         // message, here is where that should be initiated.
         Log.d(TAG, "From: " + remoteMessage.getFrom())
         Log.d(TAG, "Notification Message Body: " + (remoteMessage.notification?.body ?: "no body"))
+        val i = Intent()
+        i.setClass(this, MainActivity::class.java)
+        i.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        i.putExtra("fragment","MATCH")
+        i.putExtra("msg",remoteMessage.notification?.body)
+        startActivity(i)
     }
 
     companion object {
