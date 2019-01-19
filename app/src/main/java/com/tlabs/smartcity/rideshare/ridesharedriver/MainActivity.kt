@@ -27,13 +27,14 @@ class MainActivity : AppCompatActivity() {
         drawerLayout = binding.drawerLayout
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.mapFragment
+                R.id.mapFragment,
+                R.id.settingsFragment
             ), drawerLayout
         )
 
         // Set up navigation menu
         binding.toolbar.setupWithNavController(navController, appBarConfiguration)
-        //binding.navView.setupWithNavController(navController)
+        binding.navView.setupWithNavController(navController)
     }
 
 

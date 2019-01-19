@@ -1,4 +1,4 @@
-package com.tlabs.smartcity.rideshare.ridesharedriver.screens
+package com.tlabs.smartcity.rideshare.ridesharedriver.screens.map
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -12,30 +12,43 @@ import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.LocationSettingsRequest
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.mapbox.android.core.location.LocationEngineListener
 import com.mapbox.android.core.location.LocationEnginePriority
 import com.mapbox.android.core.location.LocationEngineProvider
 import com.mapbox.api.directions.v5.models.DirectionsRoute
+import com.mapbox.core.constants.Constants
 import com.mapbox.geojson.LineString
+import com.mapbox.mapboxsdk.annotations.MarkerOptions
 import com.mapbox.mapboxsdk.annotations.PolylineOptions
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory
 import com.mapbox.mapboxsdk.geometry.LatLng
 import com.mapbox.mapboxsdk.geometry.LatLngBounds
 import com.mapbox.mapboxsdk.location.LocationComponent
 import com.mapbox.mapboxsdk.maps.MapboxMap
-import com.tlabs.smartcity.rideshare.ridesharedriver.MainActivity
+import com.tlabs.smartcity.rideshare.ridesharedriver.R
 import com.tlabs.smartcity.rideshare.ridesharedriver.databinding.MapFrafmentBinding
 import com.tlabs.smartcity.rideshare.ridesharedriver.util.ScopedFragment
 import kotlinx.android.synthetic.main.map_frafment.*
+import kotlinx.coroutines.launch
 import org.jetbrains.anko.longToast
 
 class MapFragment : ScopedFragment() {
 
     private lateinit var mapBoxMap: MapboxMap
+
+    private val viewModel: MapViewModel by lazy {
+        ViewModelProviders.of(this).get(MapViewModel::class.java)
+    }
+    private val navigationLineColor: Int by lazy(LazyThreadSafetyMode.NONE) {
+        ContextCompat.getColor(requireContext(), R.color.colorPrimary)
+    }
 
     private lateinit var binding: MapFrafmentBinding
 
@@ -54,17 +67,82 @@ class MapFragment : ScopedFragment() {
         super.onViewCreated(view, savedInstanceState)
         mapView.onCreate(savedInstanceState)
         binding.setLifecycleOwner(viewLifecycleOwner)
-
-
-        binding.toolbarListener = View.OnClickListener {
-            val act = requireActivity() as MainActivity
-            act.drawerLayout.openDrawer(GravityCompat.START)
+        binding.okListener = View.OnClickListener {
+            //DO LOGIC
+            requireActivity().longToast("Route Added!")
         }
+        binding.cancelListener = View.OnClickListener {
+            clean()
+        }
+
 
         mapView.getMapAsync {
             mapBoxMap = it
             locationComponent = mapBoxMap.locationComponent
             enableUserLocation(it)
+            mapBoxMap.addOnMapClickListener { point ->
+                if (viewModel.start == null) {
+                    viewModel.start = point
+                    button_clear.visibility = View.VISIBLE
+                    mapBoxMap.addMarker(
+                        MarkerOptions()
+                            .position(point)
+                            .title("START")
+                    )
+                } else if (viewModel.finish == null) {
+                    viewModel.finish = point
+                    button_ok.visibility = View.VISIBLE
+                    mapBoxMap.addMarker(
+                        MarkerOptions()
+                            .position(point)
+                            .title("FINISH")
+                    )
+                    launch {
+                        drawNavigationPolylineRoute(viewModel.buildRoute())
+                    }
+                }
+
+            }
+        }
+    }
+
+    private fun drawNavigationPolylineRoute(route: DirectionsRoute) {
+        // Check for and remove a previously-drawn navigation route polyline before drawing the new one
+        mapView.getMapAsync { map ->
+
+            if (map.polylines.size > 0) {
+                map.removePolyline(map.polylines[0])
+            }
+
+            // Convert LineString coordinates into a LatLng[]
+            val lineString = LineString.fromPolyline(route.geometry()!!, Constants.PRECISION_6)
+            val coordinates = lineString.coordinates()
+            val polylineDirectionsPoints = arrayOfNulls<LatLng>(coordinates.size)
+            for (i in coordinates.indices) {
+                polylineDirectionsPoints[i] = LatLng(
+                    coordinates[i].latitude(),
+                    coordinates[i].longitude()
+                )
+            }
+
+            // Draw the navigation route polyline on to the map
+            map.addPolyline(
+                PolylineOptions()
+                    .add(*polylineDirectionsPoints)
+                    .color(navigationLineColor)
+                    .width(NAVIGATION_LINE_WIDTH)
+            )
+
+//            val latLngBounds = LatLngBounds.Builder()
+//                .includes(polylineDirectionsPoints.toMutableList())
+//                .build()
+
+//            val bottomPadding = if (sheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED)
+//                CAMERA_EXPANDED_PADDING else CAMERA_COLLAPSED_PADDING
+//            map.easeCamera(
+//                CameraUpdateFactory.newLatLngBounds(latLngBounds, 50, 50, 50, 50),
+//                2000
+//            )
         }
     }
 
@@ -124,45 +202,6 @@ class MapFragment : ScopedFragment() {
         }
     }
 
-    private fun drawNavigationPolylineRoute(route: DirectionsRoute) {
-        // Check for and remove a previously-drawn navigation route polyline before drawing the new one
-        mapView.getMapAsync { map ->
-
-            if (map.polylines.size > 0) {
-                map.removePolyline(map.polylines[0])
-            }
-
-            // Convert LineString coordinates into a LatLng[]
-            val lineString = LineString.fromPolyline(route.geometry()!!, 6)
-            val coordinates = lineString.coordinates()
-            val polylineDirectionsPoints = arrayOfNulls<LatLng>(coordinates.size)
-            for (i in coordinates.indices) {
-                polylineDirectionsPoints[i] = LatLng(
-                    coordinates[i].latitude(),
-                    coordinates[i].longitude()
-                )
-            }
-
-            // Draw the navigation route polyline on to the map
-            map.addPolyline(
-                PolylineOptions()
-                    .add(*polylineDirectionsPoints)
-                    //.color(navigationLineColor)
-                    .width(NAVIGATION_LINE_WIDTH)
-            )
-
-            val latLngBounds = LatLngBounds.Builder()
-                .includes(polylineDirectionsPoints.toMutableList())
-                .build()
-
-
-            map.easeCamera(
-                CameraUpdateFactory.newLatLngBounds(latLngBounds, 50, 50, 50, 50),
-                2000
-            )
-        }
-    }
-
     private fun enableUserLocation(mapboxMap: MapboxMap) {
         val locationComponent = mapboxMap.locationComponent
         // Activate with options
@@ -200,7 +239,8 @@ class MapFragment : ScopedFragment() {
             val engine = LocationEngineProvider(requireContext()).obtainBestLocationEngineAvailable()
             engine.priority = LocationEnginePriority.HIGH_ACCURACY
             // check position every 5 sec
-            engine.interval = LOCATION_UPDATE_INTERVAL
+            engine.interval =
+                    LOCATION_UPDATE_INTERVAL
             // engine
             locationComponent.activateLocationComponent(requireActivity(), engine)
             locationComponent.isLocationComponentEnabled = true
@@ -227,7 +267,8 @@ class MapFragment : ScopedFragment() {
             )
             mapboxMap.animateCamera(
                 CameraUpdateFactory.newLatLngZoom(
-                    latLng, CAMERA_DEFAULT_ZOOM
+                    latLng,
+                    CAMERA_DEFAULT_ZOOM
                 ), object : MapboxMap.CancelableCallback {
                     override fun onFinish() {
 
@@ -238,6 +279,16 @@ class MapFragment : ScopedFragment() {
                 }
             )
             //searchVehicleViewModel.currentPosition = latLng
+        }
+    }
+
+    private fun clean() {
+        mapView.getMapAsync {
+            it.clear()
+            button_ok.visibility = View.GONE
+            button_clear.visibility = View.GONE
+            viewModel.finish = null
+            viewModel.start = null
         }
     }
 

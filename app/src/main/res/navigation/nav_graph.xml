@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
             android:id="@+id/nav_graph" app:startDestination="@id/mapFragment">
     <fragment android:id="@+id/mapFragment"
               android:label="Add route"
-              android:name="com.tlabs.smartcity.rideshare.ridesharedriver.screens.MapFragment">
+              android:name="com.tlabs.smartcity.rideshare.ridesharedriver.screens.map.MapFragment">
+    </fragment>
+
+    <fragment android:id="@+id/settingsFragment"
+              android:name="com.tlabscloud.r2b.dflow.screens.settings.SettingsFragment"
+              tools:layout="@layout/settings_fragment">
     </fragment>
 </navigation>

@@ -64,6 +64,7 @@ ext {
     retrofitVersion = '2.4.0'
     okhttpLoggingInterceptor = '3.11.0'
     retrofitCoroutinesAdapter = '0.9.2'
+    androidXPreference = '1.1.0-alpha02'
 }
 dependencies {
     // Kotlin
@@ -80,6 +81,7 @@ dependencies {
     implementation "androidx.legacy:legacy-support-v4:$legacyLibraryVersion"
     implementation "androidx.room:room-runtime:$roomVersion"
     implementation "com.google.android.material:material:$materialLibraryVersion"
+    implementation "androidx.preference:preference-ktx:$androidXPreference"
 
     // coroutines
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion"
