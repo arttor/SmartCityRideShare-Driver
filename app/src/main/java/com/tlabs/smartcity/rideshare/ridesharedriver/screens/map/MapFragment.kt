@@ -34,6 +34,7 @@ import com.mapbox.mapboxsdk.location.LocationComponent
 import com.mapbox.mapboxsdk.maps.MapboxMap
 import com.tlabs.smartcity.rideshare.ridesharedriver.R
 import com.tlabs.smartcity.rideshare.ridesharedriver.databinding.MapFrafmentBinding
+import com.tlabs.smartcity.rideshare.ridesharedriver.util.AnimationUtil
 import com.tlabs.smartcity.rideshare.ridesharedriver.util.ScopedFragment
 import kotlinx.android.synthetic.main.map_frafment.*
 import kotlinx.coroutines.launch
@@ -44,7 +45,7 @@ class MapFragment : ScopedFragment() {
     private lateinit var mapBoxMap: MapboxMap
 
     private val viewModel: MapViewModel by lazy {
-        ViewModelProviders.of(this).get(MapViewModel::class.java)
+        ViewModelProviders.of(this.requireActivity()).get(MapViewModel::class.java)
     }
     private val navigationLineColor: Int by lazy(LazyThreadSafetyMode.NONE) {
         ContextCompat.getColor(requireContext(), R.color.colorPrimary)
@@ -70,7 +71,9 @@ class MapFragment : ScopedFragment() {
         binding.okListener = View.OnClickListener {
             //DO LOGIC
             launch {
-
+                AnimationUtil.fadeIn(content = binding.progress, transparency = 0.7f)
+                viewModel.addRoute()
+                AnimationUtil.fadeOut(content =  binding.progress, transparency = 0.7f)
             }
             requireActivity().longToast("Route Added!")
         }

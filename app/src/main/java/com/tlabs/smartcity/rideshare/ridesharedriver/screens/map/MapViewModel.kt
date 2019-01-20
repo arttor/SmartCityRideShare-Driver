@@ -1,11 +1,12 @@
 package com.tlabs.smartcity.rideshare.ridesharedriver.screens.map
 
+import com.google.firebase.iid.FirebaseInstanceId
 import com.mapbox.api.directions.v5.models.DirectionsRoute
 import com.mapbox.mapboxsdk.geometry.LatLng
+import com.tlabs.smartcity.rideshare.ridesharedriver.api.BackendApi
 import com.tlabs.smartcity.rideshare.ridesharedriver.api.MapBoxApi
 import com.tlabs.smartcity.rideshare.ridesharedriver.api.SovrApi
-import com.tlabs.smartcity.rideshare.ridesharedriver.data.CreateConnOfferRespMsg
-import com.tlabs.smartcity.rideshare.ridesharedriver.data.LoginReq
+import com.tlabs.smartcity.rideshare.ridesharedriver.data.*
 import com.tlabs.smartcity.rideshare.ridesharedriver.util.ScopedViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -20,14 +21,27 @@ class MapViewModel : ScopedViewModel() {
     }
 
     suspend fun addRoute() = withContext(Dispatchers.IO) {
-
+        BackendApi.instance.registerDriver(RegDriverReq(wallet = "1",
+            rideData = RideData(
+                from = Coordinates(longitude = start!!.longitude,
+                    latitude = start!!.latitude),
+                to = Coordinates(longitude = finish!!.longitude,
+                    latitude = finish!!.latitude)
+            )
+        )).await()
     }
 
     suspend fun login() = withContext(Dispatchers.IO) {
+
         val logResp = SovrApi.instance.login(LoginReq(password = "", username = "")).await()
         token = logResp.token
-//        val crConnResp = SovrApi.instance.createConnOffer(token).await()
-//        val accConnResp = SovrApi.instance.acceptConnOffer(token, crConnResp.message).await()
+        val regResp =BackendApi.instance.registerDevice(
+            RegDevReq(
+                tokenId = token,
+                firebaseToken = FirebaseInstanceId.getInstance().token?: "",
+                wallet = "1"
+            )
+        ).await()
     }
 
 }
