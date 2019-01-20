@@ -10,6 +10,7 @@ import com.tlabs.smartcity.rideshare.ridesharedriver.MainViewModel
 import com.tlabs.smartcity.rideshare.ridesharedriver.R
 import com.tlabs.smartcity.rideshare.ridesharedriver.databinding.LoginFragmentBinding
 import com.tlabs.smartcity.rideshare.ridesharedriver.util.ScopedFragment
+import kotlinx.coroutines.launch
 
 class LoginFragment : ScopedFragment() {
     private val vm: MainViewModel by lazy {
@@ -30,11 +31,18 @@ class LoginFragment : ScopedFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.tokenInput.setText(vm.parkId)
         binding.loginButton.setOnClickListener {
-            if (binding.tokenInput.text.toString() != null) {
-                vm.token = binding.tokenInput.text.toString()
-                findNavController().navigate(R.id.mapFragment)
+            launch {
+                vm.pay()
+                for (i in 1..10) {
+                    binding.balance.text = "Baclance: ${vm.getBalDel()} ETH"
+                }
+
             }
+        }
+        launch {
+            binding.balance.text = "Baclance: ${vm.getBal()} ETH"
         }
 
     }

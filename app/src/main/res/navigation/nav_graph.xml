@@ -19,7 +19,7 @@
     </fragment>
 
     <fragment android:id="@+id/loginFragment"
-              android:label="Login"
+              android:label="Parking"
               android:name="com.tlabs.smartcity.rideshare.ridesharedriver.screens.login.LoginFragment"
               tools:layout="@layout/login_fragment">
     </fragment>
