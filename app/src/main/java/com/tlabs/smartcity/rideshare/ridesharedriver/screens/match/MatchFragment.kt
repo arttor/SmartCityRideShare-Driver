@@ -10,6 +10,7 @@ import com.tlabs.smartcity.rideshare.ridesharedriver.screens.map.MapViewModel
 import com.tlabs.smartcity.rideshare.ridesharedriver.util.AnimationUtil
 import com.tlabs.smartcity.rideshare.ridesharedriver.util.ScopedFragment
 import kotlinx.coroutines.launch
+import org.jetbrains.anko.longToast
 
 class MatchFragment : ScopedFragment() {
     private val viewModel: MatchViewModel by lazy {
@@ -36,7 +37,11 @@ class MatchFragment : ScopedFragment() {
         viewModel.msg?.let {
             launch {
                 AnimationUtil.fadeIn(content = binding.progress, transparency = 0.7f)
-                viewModel.postInfo(it, mainModel.token)
+                val res = viewModel.postInfo(it, mainModel.token)
+                if(res){
+                    binding.msg.text = "Success\nYour contacts sent to Passenger!"
+                    requireActivity().longToast("Success!!!")
+                }
                 AnimationUtil.fadeOut(content = binding.progress, transparency = 0.7f)
             }
         }

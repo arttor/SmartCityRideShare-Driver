@@ -1,5 +1,7 @@
 package com.tlabs.smartcity.rideshare.ridesharedriver
 
+import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
@@ -46,6 +48,14 @@ class MainActivity : AppCompatActivity() {
         if ("MATCH" == intent.getStringExtra("fragment")) {
             viewModel.msg = intent.getStringExtra("msg")
             navController.navigate(R.id.matchFragment)
+        }
+
+    }
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        if ("MATCH" == intent!!.getStringExtra("fragment")) {
+            viewModel.msg = intent.getStringExtra("msg")
+            Navigation.findNavController(this, R.id.nav_fragment).navigate(R.id.matchFragment)
         }
 
     }

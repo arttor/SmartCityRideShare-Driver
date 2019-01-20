@@ -21,7 +21,7 @@ class MapViewModel : ScopedViewModel() {
     }
 
     suspend fun addRoute() = withContext(Dispatchers.IO) {
-        BackendApi.instance.registerDriver(RegDriverReq(wallet = "1",
+        BackendApi.instance.registerDriver(RegDriverReq(wallet = "0xaff4a042646F6e32F897e6F3C2e310A781606fd5",
             rideData = RideData(
                 from = Coordinates(longitude = start!!.longitude,
                     latitude = start!!.latitude),
@@ -39,7 +39,7 @@ class MapViewModel : ScopedViewModel() {
             RegDevReq(
                 tokenId = token,
                 firebaseToken = FirebaseInstanceId.getInstance().token?: "",
-                wallet = "1"
+                wallet = "0xaff4a042646F6e32F897e6F3C2e310A781606fd5"
             )
         ).await()
     }

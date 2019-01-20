@@ -5,7 +5,8 @@ import java.util.*
 data class LoginReq(val password:String, val username: String)
 data class LoginResp(val token:String)
 data class CreateConnOfferResp(val message:CreateConnOfferRespMsg)
-data class CreateConnOfferRespMsg(val message:CreateConnOfferRespMsgMsg)
+data class CreateConnOfferRespMsg(val message:CreateConnOfferRespMsgMsg,
+                                  val id: String, val type:String)
 data class CreateConnOfferRespMsgMsg(
     val did:String,
     val verkey:String,
@@ -42,4 +43,5 @@ data class RevAttrs(val attr1_referent:Attr1Ref)
 data class Attr1Ref(val raw:String)
 data class AccAndCreProof(val proofRequestId:String)
 data class GetProofReqResp(val id:String)
+data class SovrinReq(val connectionOffer:CreateConnOfferRespMsg)
 

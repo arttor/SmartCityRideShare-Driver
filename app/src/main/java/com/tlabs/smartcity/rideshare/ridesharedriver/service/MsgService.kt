@@ -18,9 +18,10 @@ class MsgService : FirebaseMessagingService() {
         Log.d(TAG, "Notification Message Body: " + (remoteMessage.notification?.body ?: "no body"))
         val i = Intent()
         i.setClass(this, MainActivity::class.java)
-        i.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        i.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
         i.putExtra("fragment","MATCH")
-        i.putExtra("msg",remoteMessage.notification?.body)
+        i.putExtra("msg", remoteMessage.data["message"])
+
         startActivity(i)
     }
 

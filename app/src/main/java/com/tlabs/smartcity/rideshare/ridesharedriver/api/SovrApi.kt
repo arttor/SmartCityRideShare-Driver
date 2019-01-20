@@ -18,7 +18,7 @@ interface SovrApi {
 
     @POST("/api/connectionrequest")
     fun acceptConnOffer(@Header("Authorization")header: String,
-                        @Body body: CreateConnOfferRespMsg
+                        @Body body: SovrinReq
     ): Deferred<ResponseBody>
 
     @GET("/api/wallet/default")
@@ -47,6 +47,7 @@ interface SovrApi {
     fun getProofReq(@Header("Authorization")header: String,
                        @Path("id")id:String
     ): Deferred<RequestedPredicates>
+
 
 
 
