@@ -36,13 +36,13 @@ class LoginFragment : ScopedFragment() {
             launch {
                 vm.pay()
                 for (i in 1..10) {
-                    binding.balance.text = "Baclance: ${vm.getBalDel()} ETH"
+                    binding.balance.text = "Balance: ${vm.getBalDel()} ETH"
                 }
 
             }
         }
         launch {
-            binding.balance.text = "Baclance: ${vm.getBal()} ETH"
+            binding.balance.text = "Balance: ${vm.getBal()} ETH"
         }
 
     }
