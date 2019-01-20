@@ -31,6 +31,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/loginButton"/>
+            <Button
+                    android:text="REFRESH"
+                    android:layout_marginTop="32dp"
+                    style="@style/Widget.AppCompat.Button.Colored"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/refreshButton"/>
 
         </LinearLayout>
     </FrameLayout>

@@ -41,6 +41,11 @@ class LoginFragment : ScopedFragment() {
 
             }
         }
+        binding.refreshButton.setOnClickListener {
+            launch {
+                binding.balance.text = "Balance: ${vm.getBal()} ETH"
+            }
+        }
         launch {
             binding.balance.text = "Balance: ${vm.getBal()} ETH"
         }
