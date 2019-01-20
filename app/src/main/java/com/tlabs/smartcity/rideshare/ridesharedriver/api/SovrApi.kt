@@ -62,7 +62,7 @@ interface SovrApi {
                     })
                     .build()
             )
-            .baseUrl("backend url")
+            .baseUrl("http://10.177.1.142:8000")
             .addCallAdapterFactory(CoroutineCallAdapterFactory())
             .addConverterFactory(GsonConverterFactory.create())
             .build().create(SovrApi::class.java)

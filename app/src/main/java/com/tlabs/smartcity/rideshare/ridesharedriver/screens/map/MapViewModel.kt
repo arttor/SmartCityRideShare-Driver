@@ -33,7 +33,7 @@ class MapViewModel : ScopedViewModel() {
 
     suspend fun login() = withContext(Dispatchers.IO) {
 
-        val logResp = SovrApi.instance.login(LoginReq(password = "", username = "")).await()
+        val logResp = SovrApi.instance.login(LoginReq(password = "test123test", username = "jesse")).await()
         token = logResp.token
         val regResp =BackendApi.instance.registerDevice(
             RegDevReq(
