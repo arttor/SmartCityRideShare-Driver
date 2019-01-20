@@ -26,7 +26,7 @@ interface BackendApi {
                     })
                     .build()
             )
-            .baseUrl("backend url")
+            .baseUrl("https://0.177.1.130:8080")
             .addCallAdapterFactory(CoroutineCallAdapterFactory())
             .addConverterFactory(GsonConverterFactory.create())
             .build().create(BackendApi::class.java)
