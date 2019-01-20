@@ -69,6 +69,9 @@ class MapFragment : ScopedFragment() {
         binding.setLifecycleOwner(viewLifecycleOwner)
         binding.okListener = View.OnClickListener {
             //DO LOGIC
+            launch {
+
+            }
             requireActivity().longToast("Route Added!")
         }
         binding.cancelListener = View.OnClickListener {
@@ -103,6 +106,9 @@ class MapFragment : ScopedFragment() {
                 }
 
             }
+        }
+        launch {
+            viewModel.login()
         }
     }
 
