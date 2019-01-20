@@ -32,7 +32,7 @@ interface SovrApi {
 
     @GET("/api/proofrequest")
     fun getProofReq(@Header("Authorization")header: String
-    ): Deferred<GetProofReqResp>
+    ): Deferred<List<GetProofReqResp>>
 
     @POST("/api/proof")
     fun acceptProofReqAndSendProof(@Header("Authorization")header: String,

@@ -27,16 +27,15 @@ class MatchViewModel : ScopedViewModel() {
             delay(1000)
             val resp = try {
 
-             SovrApi.instance.getAllProofReq(token).await()
+             SovrApi.instance.getProofReq(token).await()
             }catch (e:Exception){
 
                 Log.e("",e.message,e)
                 null
             }
             if (resp != null && !resp.isEmpty()) {
-                val r = resp[0]
                 val sendResp = try {
-                    SovrApi.instance.acceptProofReqAndSendProof(token, AccAndCreProof(r.id)).await()
+                    SovrApi.instance.acceptProofReqAndSendProof(token, AccAndCreProof(resp[resp.size-1].id)).await()
                 } catch (e:Exception){
                     Log.e("",e.message,e)
                     null
